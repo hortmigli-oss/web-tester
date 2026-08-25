@@ -8,19 +8,19 @@ import { QuestionRenderer } from '@/components/quiz/QuestionRenderer';
 import { ChevronLeft, ChevronRight, Save, CheckCircle } from 'lucide-react';
 
 export function QuizPage() {
-  const { testId, mode } = useParams<{ testId: string; mode: 'practice' | 'exam' }>();
+  const { testId, mode } = useParams<{ testId: string; mode?: 'practice' | 'exam' }>();
   const navigate = useNavigate();
   
   const {
-    currentAttempt: attempt,
     currentTest: test,
+    currentAttempt: attempt,
     answerQuestion: updateAnswer,
     jumpToQuestion: navigateToQuestion,
     finishQuiz: finishAttempt,
     persistProgress: saveAttempt,
   } = useQuizStore();
 
-  if (!test || !attempt) {
+  if (!test || !attempt || !mode) {
     return (
       <div className="container mx-auto p-6">
         <Alert>
@@ -32,16 +32,18 @@ export function QuizPage() {
     );
   }
 
+  const handleAnswerChange = (questionId: string, value: unknown) => {
+    updateAnswer(questionId, value);
+    saveAttempt();
+  };
+
   const currentQuestion = test.questions[attempt.currentQuestionIndex];
   const currentAnswer = attempt.answers.find(
     (a: { questionId: string }) => a.questionId === currentQuestion.id
   );
 
-  const handleAnswerChange = (answer: typeof currentAnswer) => {
-    if (answer) {
-      updateAnswer(answer.questionId, answer.value);
-      saveAttempt();
-    }
+  const handleAnswerChangeWrapped = (answer: { questionId: string; value: unknown }) => {
+    handleAnswerChange(answer.questionId, answer.value);
   };
 
   const handleNavigate = (index: number) => {
@@ -67,7 +69,6 @@ export function QuizPage() {
   };
 
   const isLastQuestion = attempt.currentQuestionIndex === test.questions.length - 1;
-  const quizMode = mode || 'practice';
 
   return (
     <div className="container mx-auto p-6">
@@ -81,7 +82,7 @@ export function QuizPage() {
                     Вопрос {attempt.currentQuestionIndex + 1} из {test.questions.length}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Режим: {quizMode === 'practice' ? 'Практика' : 'Экзамен'}
+                    Режим: {mode === 'practice' ? 'Практика' : 'Экзамен'}
                   </p>
                 </div>
                 <Button variant="outline" size="sm" onClick={saveAttempt}>
@@ -95,9 +96,9 @@ export function QuizPage() {
           <QuestionRenderer
             question={currentQuestion}
             userAnswer={currentAnswer}
-            onAnswerChange={handleAnswerChange}
-            mode={quizMode}
-            showResult={quizMode === 'practice'}
+            onAnswerChange={handleAnswerChangeWrapped}
+            mode={mode}
+            showResult={mode === 'practice'}
           />
 
           <div className="flex justify-between">
@@ -130,7 +131,7 @@ export function QuizPage() {
             questions={test.questions}
             currentIndex={attempt.currentQuestionIndex}
             onNavigate={handleNavigate}
-            mode={quizMode}
+            mode={mode}
           />
         </div>
       </div>
