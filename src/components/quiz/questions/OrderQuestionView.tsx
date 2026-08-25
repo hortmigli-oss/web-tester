@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import type { OrderQuestion, UserAnswer } from '@/domain/quiz/types';
 import { checkAnswer } from '@/domain/quiz/answer-checker';
@@ -117,7 +117,7 @@ export function OrderQuestionView({
         <div className="mt-4 p-4 bg-muted rounded-lg">
           <h4 className="font-semibold mb-2">Правильный порядок:</h4>
           <ol className="text-sm list-decimal list-inside space-y-1">
-            {question.correctOrder.map((itemId, index) => {
+            {question.correctOrder.map((itemId) => {
               const item = question.items.find(i => i.id === itemId);
               return item ? (
                 <li key={itemId}>{item.text}</li>

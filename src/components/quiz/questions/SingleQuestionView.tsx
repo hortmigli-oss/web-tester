@@ -1,4 +1,3 @@
-import React from 'react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import type { SingleChoiceQuestion, UserAnswer } from '@/domain/quiz/types';
@@ -75,7 +74,7 @@ export function SingleQuestionView({
         <div className="mt-4 p-4 bg-muted rounded-lg">
           <h4 className="font-semibold mb-2">Правильный ответ:</h4>
           <p className="text-sm">
-            {question.options.find(o => o.id === question.correctAnswer)?.text}
+            {question.options.find(o => o.id === question.correctAnswer[0])?.text}
           </p>
         </div>
       )}

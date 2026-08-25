@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useQuizStore } from '@/stores/quiz-store';
+import { useQuizStore } from '@/features/quiz/quiz-store';
 import { QuizNavigation } from '@/components/quiz/QuizNavigation';
 import { QuestionRenderer } from '@/components/quiz/QuestionRenderer';
 import { ChevronLeft, ChevronRight, Save, CheckCircle } from 'lucide-react';
@@ -12,12 +12,12 @@ export function QuizPage() {
   const navigate = useNavigate();
   
   const {
-    attempt,
-    test,
-    updateAnswer,
-    navigateToQuestion,
-    finishAttempt,
-    saveAttempt,
+    currentAttempt: attempt,
+    currentTest: test,
+    answerQuestion: updateAnswer,
+    jumpToQuestion: navigateToQuestion,
+    finishQuiz: finishAttempt,
+    persistProgress: saveAttempt,
   } = useQuizStore();
 
   if (!test || !attempt) {
@@ -39,7 +39,7 @@ export function QuizPage() {
 
   const handleAnswerChange = (answer: typeof currentAnswer) => {
     if (answer) {
-      updateAnswer(answer);
+      updateAnswer(answer.questionId, answer.value);
       saveAttempt();
     }
   };
@@ -67,6 +67,7 @@ export function QuizPage() {
   };
 
   const isLastQuestion = attempt.currentQuestionIndex === test.questions.length - 1;
+  const quizMode = mode || 'practice';
 
   return (
     <div className="container mx-auto p-6">
@@ -80,7 +81,7 @@ export function QuizPage() {
                     Вопрос {attempt.currentQuestionIndex + 1} из {test.questions.length}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Режим: {mode === 'practice' ? 'Практика' : 'Экзамен'}
+                    Режим: {quizMode === 'practice' ? 'Практика' : 'Экзамен'}
                   </p>
                 </div>
                 <Button variant="outline" size="sm" onClick={saveAttempt}>
@@ -95,8 +96,8 @@ export function QuizPage() {
             question={currentQuestion}
             userAnswer={currentAnswer}
             onAnswerChange={handleAnswerChange}
-            mode={mode}
-            showResult={mode === 'practice'}
+            mode={quizMode}
+            showResult={quizMode === 'practice'}
           />
 
           <div className="flex justify-between">
@@ -129,7 +130,7 @@ export function QuizPage() {
             questions={test.questions}
             currentIndex={attempt.currentQuestionIndex}
             onNavigate={handleNavigate}
-            mode={mode}
+            mode={quizMode}
           />
         </div>
       </div>

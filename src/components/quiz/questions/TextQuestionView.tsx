@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import type { TextQuestion, UserAnswer } from '@/domain/quiz/types';
 import { checkAnswer } from '@/domain/quiz/answer-checker';
