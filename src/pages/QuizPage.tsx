@@ -6,6 +6,8 @@ import { useQuizStore } from '@/features/quiz/quiz-store';
 import { QuizNavigation } from '@/components/quiz/QuizNavigation';
 import { QuestionRenderer } from '@/components/quiz/QuestionRenderer';
 import { ChevronLeft, ChevronRight, Save, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import type { UserAnswer } from '@/domain/quiz/types';
 
 export function QuizPage() {
   const { testId, mode } = useParams<{ testId: string; mode?: 'practice' | 'exam' }>();
@@ -19,6 +21,15 @@ export function QuizPage() {
     finishQuiz: finishAttempt,
     persistProgress: saveAttempt,
   } = useQuizStore();
+
+  // Track which questions have been answered in practice mode
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(() => {
+    // Initialize from existing answers when loading a saved attempt
+    if (attempt && mode === 'practice') {
+      return new Set(attempt.answers.map(a => a.questionId));
+    }
+    return new Set();
+  });
 
   if (!test || !attempt || !mode) {
     return (
@@ -34,6 +45,16 @@ export function QuizPage() {
 
   const handleAnswerChange = (questionId: string, value: unknown) => {
     updateAnswer(questionId, value);
+    
+    // In practice mode, mark question as answered when user provides an answer
+    if (mode === 'practice') {
+      setAnsweredQuestions(prev => {
+        const newSet = new Set(prev);
+        newSet.add(questionId);
+        return newSet;
+      });
+    }
+    
     saveAttempt();
   };
 
@@ -42,9 +63,12 @@ export function QuizPage() {
     (a: { questionId: string }) => a.questionId === currentQuestion.id
   );
 
-  const handleAnswerChangeWrapped = (answer: { questionId: string; value: unknown }) => {
+  const handleAnswerChangeWrapped = (answer: UserAnswer) => {
     handleAnswerChange(answer.questionId, answer.value);
   };
+
+  // Determine if we should show result for current question
+  const shouldShowResult = mode === 'practice' && answeredQuestions.has(currentQuestion.id);
 
   const handleNavigate = (index: number) => {
     navigateToQuestion(index);
@@ -98,7 +122,7 @@ export function QuizPage() {
             userAnswer={currentAnswer}
             onAnswerChange={handleAnswerChangeWrapped}
             mode={mode}
-            showResult={mode === 'practice'}
+            showResult={shouldShowResult}
           />
 
           <div className="flex justify-between">
