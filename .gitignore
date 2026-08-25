@@ -7,77 +7,21 @@ dist/
 build/
 target/
 
-# Temporary files
-*.tmp
-*.temp
+# Package lock files
+package-lock.json
 
-# Logs
-*.log
+# Vite/Vitest cache
+.node_modules/.vite/
 
-# Environment
+# Environment files
 .env
 .env.local
 *.env.*
 
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
+# Logs
+*.log
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.py.class
-.Python
-venv/
-.venv/
-.env
-.env.local
-.env.*
-.mypy_cache/
-.pytest_cache/
-.coverage
+# Test coverage
 coverage/
-htmlcov/
-
-# Compiled files
-*.o
-*.obj
-*.so
-*.a
-*.dll
-*.exe
-*.out
-*.class
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Compressed files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+.nyc_output/
 ```
