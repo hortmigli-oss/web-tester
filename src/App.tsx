@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import { EditorPage } from './pages/EditorPage'
 import { QuizPage } from './pages/QuizPage'
 import { QuizResultPage } from './pages/QuizResultPage'
@@ -34,14 +34,12 @@ function HomePage() {
 
 function App() {
   return (
-    <BrowserRouter basename="/web-tester">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/editor" element={<EditorPage />} />
-        <Route path="/quiz" element={<QuizPage />} />
-        <Route path="/quiz/:attemptId/result" element={<QuizResultPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/editor/:testId" element={<EditorPage />} />
+      <Route path="/quiz/:testId/:mode?" element={<QuizPage />} />
+      <Route path="/quiz/:testId/result" element={<QuizResultPage />} />
+    </Routes>
   )
 }
 
