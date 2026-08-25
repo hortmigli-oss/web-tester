@@ -10,7 +10,7 @@ function HomePage() {
       <h1 className="text-4xl font-bold mb-8">Web Tester</h1>
       <div className="grid gap-4 md:grid-cols-2">
         <Link
-          to="/editor"
+          to="/web-tester/editor"
           className="p-6 border rounded-lg hover:bg-accent transition-colors"
         >
           <h2 className="text-2xl font-semibold mb-2">Конструктор тестов</h2>
@@ -19,7 +19,7 @@ function HomePage() {
           </p>
         </Link>
         <Link
-          to="/quiz"
+          to="/web-tester/quiz"
           className="p-6 border rounded-lg hover:bg-accent transition-colors"
         >
           <h2 className="text-2xl font-semibold mb-2">Пройти тест</h2>
@@ -35,10 +35,10 @@ function HomePage() {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/editor/:testId?" element={<EditorPage />} />
-      <Route path="/quiz/:testId/:mode?" element={<QuizPage />} />
-      <Route path="/result/:attemptId" element={<QuizResultPage />} />
+      <Route path="/web-tester/" element={<HomePage />} />
+      <Route path="/web-tester/editor/:testId?" element={<EditorPage />} />
+      <Route path="/web-tester/quiz/:testId/:mode?" element={<QuizPage />} />
+      <Route path="/web-tester/result/:attemptId" element={<QuizResultPage />} />
     </Routes>
   )
 }
