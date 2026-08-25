@@ -8,7 +8,7 @@ build/
 target/
 
 # Vite/Vitest cache
-.node_modules/.vite/
+node_modules/.vite/
 
 # Python cache
 __pycache__/
@@ -16,25 +16,27 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Environment variables
-.env
-.env.local
-.env.*
-
 # Logs
 *.log
 
-# Temporary files
-*.tmp
-*.temp
+# Environment variables
+.env
+.env.local
+*.env.*
+
+# IDE files
+.vscode/
+.idea/
 *.swp
 *.swo
 
-# OS generated files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Editors
-.vscode/
-.idea/
+# Testing
+coverage/
+htmlcov/
+.coverage
+.vitest/
 ```
