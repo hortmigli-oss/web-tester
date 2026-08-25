@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useEditorStore } from '../features/editor/index.js';
+import { useEditorStore, useEditorQuestions } from '../features/editor/index.js';
 import { QuestionForm } from '../components/editor/QuestionForm.js';
 import { QuestionList } from '../components/editor/QuestionList.js';
 import type { Question } from '../domain/quiz/types.js';
@@ -14,7 +14,6 @@ export function EditorPage() {
   const {
     currentTest,
     allTests,
-    questions,
     error,
     loadTests,
     createTest,
@@ -28,6 +27,8 @@ export function EditorPage() {
     moveQuestion,
     clearError,
   } = useEditorStore();
+
+  const questions = useEditorQuestions();
 
   const { startTest } = useQuizStore();
 
@@ -170,7 +171,7 @@ export function EditorPage() {
 
   // Get selected question for editing
   const selectedQuestion = selectedQuestionId
-    ? questions.find(q => q.id === selectedQuestionId)
+    ? questions.find((q: Question) => q.id === selectedQuestionId)
     : undefined;
 
   return (
