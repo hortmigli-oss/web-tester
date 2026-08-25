@@ -21,7 +21,7 @@ import {
   isStorageAvailable,
   clearAllData,
 } from '../storage';
-import type { Test, QuizAttempt } from '../../../domain/quiz/types';
+import type { Test, QuizAttempt, UserAnswer } from '../../../domain/quiz/types';
 
 // Mock localStorage
 const createLocalStorageMock = () => {
@@ -50,7 +50,7 @@ const createLocalStorageMock = () => {
 
 let localStorageMock = createLocalStorageMock();
 
-Object.defineProperty(global, 'localStorage', {
+Object.defineProperty(globalThis, 'localStorage', {
   value: localStorageMock,
   writable: true,
 });
@@ -59,7 +59,7 @@ describe('Persistence Storage', () => {
   beforeEach(() => {
     // Recreate mock to ensure clean state
     localStorageMock = createLocalStorageMock();
-    Object.defineProperty(global, 'localStorage', {
+    Object.defineProperty(globalThis, 'localStorage', {
       value: localStorageMock,
       writable: true,
     });
@@ -73,6 +73,7 @@ describe('Persistence Storage', () => {
   describe('Test Persistence', () => {
     const mockTest: Test = {
       id: 'test-1',
+      version: 1,
       title: 'Test Quiz',
       description: 'A test quiz',
       questions: [],
@@ -218,17 +219,19 @@ describe('Persistence Storage', () => {
   // ============================================================================
 
   describe('Attempt Persistence', () => {
+    const mockAnswers: UserAnswer[] = [
+      { questionId: 'q1', value: 'option-a' },
+    ];
+
     const mockAttempt: QuizAttempt = {
       id: 'attempt-1',
       testId: 'test-1',
-      status: 'in-progress',
-      answers: {},
-      startedAt: '2024-01-01T00:00:00.000Z',
-      completedAt: undefined,
-      score: undefined,
-      maxScore: undefined,
-      percentage: undefined,
       mode: 'practice',
+      currentQuestionIndex: 0,
+      answers: mockAnswers,
+      startedAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z',
+      status: 'in-progress',
     };
 
     describe('saveAttempt', () => {
@@ -250,10 +253,7 @@ describe('Persistence Storage', () => {
         const updatedAttempt: QuizAttempt = {
           ...mockAttempt,
           status: 'completed',
-          completedAt: '2024-01-01T01:00:00.000Z',
-          score: 10,
-          maxScore: 20,
-          percentage: 50,
+          finishedAt: '2024-01-01T01:00:00.000Z',
         };
         saveAttempt(updatedAttempt);
 
