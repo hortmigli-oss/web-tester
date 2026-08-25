@@ -1,1 +1,21 @@
-Nothing should be ignored based on the provided file changes. The only modified file is 'src/pages/QuizPage.tsx', which is a source code file and should not be added to .gitignore.
+```
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+*.js
+
+# Temporary files
+node_modules/.tmp/
+node_modules/.vite/
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Logs
+*.log
+```
