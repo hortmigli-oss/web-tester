@@ -2,4 +2,4 @@
  * Editor feature exports
  */
 
-export { useEditorStore } from './editor-store';
+export { useEditorStore, useEditorQuestions, useEditorCanSave } from './editor-store';

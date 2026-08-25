@@ -38,10 +38,6 @@ interface EditorState {
   moveQuestion: (questionId: string, direction: 'up' | 'down') => void;
   reorderQuestions: (questionIds: string[]) => void;
   clearError: () => void;
-  
-  // Computed
-  questions: Question[];
-  canSave: boolean;
 }
 
 // ============================================================================
@@ -289,17 +285,21 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   clearError: () => {
     set({ error: null });
   },
-  
-  // Computed values
-  get questions() {
-    return get().currentTest?.questions ?? [];
-  },
-  
-  get canSave() {
-    const { currentTest } = get();
-    if (!currentTest) return false;
-    if (!currentTest.title.trim()) return false;
-    if (currentTest.questions.length === 0) return false;
-    return true;
-  },
 }));
+
+// ============================================================================
+// COMPUTED SELECTORS
+// ============================================================================
+
+export const useEditorQuestions = () => {
+  const currentTest = useEditorStore(state => state.currentTest);
+  return currentTest?.questions ?? [];
+};
+
+export const useEditorCanSave = () => {
+  const currentTest = useEditorStore(state => state.currentTest);
+  if (!currentTest) return false;
+  if (!currentTest.title.trim()) return false;
+  if (currentTest.questions.length === 0) return false;
+  return true;
+};

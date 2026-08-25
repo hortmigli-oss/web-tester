@@ -124,18 +124,23 @@ export function QuestionForm({ initialQuestion, onSave, onCancel }: QuestionForm
     
     switch (questionType) {
       case 'single': {
-        if (options.length < 2) {
-          validationErrors.push('Минимум 2 варианта ответа required');
+        const validOptions = options.filter(o => o.text.trim());
+        if (validOptions.length < 2) {
+          validationErrors.push('Минимум 2 варианта ответа с заполненным текстом required');
         }
         if (!correctAnswerSingle) {
           validationErrors.push('Выберите правильный ответ');
+        }
+        // Check if correct answer is in valid options
+        if (correctAnswerSingle && !validOptions.some(o => o.id === correctAnswerSingle)) {
+          validationErrors.push('Правильный ответ должен быть среди заполненных вариантов');
         }
         if (!validationErrors.length) {
           question = {
             id: initialQuestion?.id ?? generateId(),
             type: 'single',
             text: text.trim(),
-            options: options.filter(o => o.text.trim()),
+            options: validOptions,
             correctAnswer: [correctAnswerSingle],
             explanation: explanation.trim() || undefined,
           };
@@ -144,18 +149,24 @@ export function QuestionForm({ initialQuestion, onSave, onCancel }: QuestionForm
       }
       
       case 'multiple': {
-        if (options.length < 2) {
-          validationErrors.push('Минимум 2 варианта ответа required');
+        const validOptions = options.filter(o => o.text.trim());
+        if (validOptions.length < 2) {
+          validationErrors.push('Минимум 2 варианта ответа с заполненным текстом required');
         }
         if (correctAnswersMultiple.length < 1) {
           validationErrors.push('Выберите хотя бы один правильный ответ');
+        }
+        // Check if all correct answers are in valid options
+        const hasInvalidCorrectAnswers = correctAnswersMultiple.some(id => !validOptions.some(o => o.id === id));
+        if (hasInvalidCorrectAnswers) {
+          validationErrors.push('Правильные ответы должны быть среди заполненных вариантов');
         }
         if (!validationErrors.length) {
           question = {
             id: initialQuestion?.id ?? generateId(),
             type: 'multiple',
             text: text.trim(),
-            options: options.filter(o => o.text.trim()),
+            options: validOptions,
             correctAnswer: correctAnswersMultiple,
             explanation: explanation.trim() || undefined,
           };
