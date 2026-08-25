@@ -36,9 +36,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/editor/:testId" element={<EditorPage />} />
+      <Route path="/editor/:testId?" element={<EditorPage />} />
       <Route path="/quiz/:testId/:mode?" element={<QuizPage />} />
-      <Route path="/quiz/:testId/result" element={<QuizResultPage />} />
+      <Route path="/result/:attemptId" element={<QuizResultPage />} />
     </Routes>
   )
 }
