@@ -7,13 +7,18 @@ dist/
 build/
 target/
 
-# Package lock files
-package-lock.json
+# Temporary files
+*.tmp
+*.temp
 
-# Vite/Vitest cache
-.node_modules/.vite/
+# Cache directories
+.vite/
+.mypy_cache/
+.pytest_cache/
+coverage/
+htmlcov/
 
-# Environment files
+# Environment
 .env
 .env.local
 *.env.*
@@ -21,7 +26,25 @@ package-lock.json
 # Logs
 *.log
 
-# Test coverage
-coverage/
-.nyc_output/
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Compiled files
+*.pyc
+__pycache__/
+*.class
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
 ```
