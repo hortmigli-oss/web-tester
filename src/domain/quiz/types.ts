@@ -159,6 +159,7 @@ export interface QuizStatistics {
   percentage: number;
   byType: StatisticsByType;
   durationSeconds: number;
+  formattedDuration?: string;
   questionDetails: QuestionStatistics[];
 }
 

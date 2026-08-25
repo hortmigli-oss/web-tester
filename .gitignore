@@ -1,23 +1,38 @@
 ```
-# Build artifacts
-dist/
-build/
-*.js
-
 # Dependencies
 node_modules/
 
-# Editors
-.vscode/
-.idea/
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
 
 # Environment
 .env
 .env.local
-.env.*
+*.env.*
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+
+# Python (if present)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Testing
+.vitest/
 ```
